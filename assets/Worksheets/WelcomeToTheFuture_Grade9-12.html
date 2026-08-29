@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Are You Becoming? · Engineering Notebook Entry 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FbFaF3;
+    --paper-warm:#F4F1E6;
+    --grid:#D9E2D3;
+    --grid-strong:#C4D2BC;
+    --ink:#23281E;
+    --ink-soft:#4c5545;
+    --pine:#1E3A2C;
+    --pine-deep:#16281F;
+    --moss:#3f6b4f;
+    --marigold:#E39A0C;
+    --marigold-soft:#F6E4B8;
+    --teal:#2f6b6b;
+    --rule:#2c4636;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:24px 24px;
+    background-position:-1px -1px;
+  }
+
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 20px 90px;
+  }
+
+  /* ---------- notebook cover / hero ---------- */
+  .cover{
+    background:var(--pine);
+    color:var(--paper);
+    margin:0 -20px 0;
+    padding:52px 34px 40px;
+    border-bottom:6px solid var(--marigold);
+    position:relative;
+    overflow:hidden;
+  }
+  .cover::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:24px 24px;
+    pointer-events:none;
+  }
+  .cover-tag{
+    position:relative;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--marigold-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    border-bottom:1px solid rgba(246,228,184,.28);
+    padding-bottom:12px;
+    margin-bottom:26px;
+  }
+  .cover h1{
+    position:relative;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.3rem,7vw,3.5rem);
+    line-height:1.02;
+    letter-spacing:-.02em;
+    margin:0 0 18px;
+  }
+  .cover h1 .hl{
+    background:var(--marigold);
+    color:var(--pine-deep);
+    padding:0 .12em;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+  }
+  .cover p{
+    position:relative;
+    max-width:54ch;
+    margin:0;
+    color:#dce8dc;
+    font-size:16px;
+  }
+  .dateline{
+    position:relative;
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#bcd0bd;
+  }
+  .dateline span{
+    border-top:1px dashed rgba(220,232,220,.5);
+    padding-top:7px;
+  }
+
+  /* ---------- intro ---------- */
+  .intro{
+    background:var(--paper-warm);
+    border:1px solid var(--grid-strong);
+    border-left:5px solid var(--marigold);
+    padding:26px 28px;
+    margin:34px 0 8px;
+  }
+  .intro h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.28rem;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .intro p{margin:0 0 12px;}
+  .intro p:last-child{margin-bottom:0;}
+  .intro strong{color:var(--pine);}
+
+  /* ---------- steps ---------- */
+  .step{
+    margin-top:56px;
+    position:relative;
+  }
+  .step-tab{
+    display:inline-flex;
+    align-items:baseline;
+    gap:10px;
+    background:var(--pine);
+    color:var(--paper);
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-size:12px;
+    padding:8px 16px 8px 14px;
+    border-radius:2px 8px 8px 2px;
+  }
+  .step-tab b{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0;
+  }
+  .step-head{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.7rem,4.6vw,2.2rem);
+    letter-spacing:-.02em;
+    line-height:1.08;
+    margin:16px 0 0;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--rule);
+  }
+
+  /* callouts */
+  .todo,.tip{
+    padding:16px 18px;
+    margin:20px 0;
+    font-size:15.5px;
+    line-height:1.55;
+  }
+  .todo{
+    background:#eef3ea;
+    border:1px solid var(--grid-strong);
+  }
+  .tip{
+    background:var(--marigold-soft);
+    border:1px dashed #d9b95e;
+  }
+  .todo .lbl,.tip .lbl{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--moss);
+    display:block;
+    margin-bottom:5px;
+  }
+  .tip .lbl{color:#9a6b00;}
+
+  /* prompts */
+  .prompts{
+    list-style:none;
+    counter-reset:q;
+    margin:24px 0 0;
+    padding:0;
+  }
+  .prompts>li{
+    counter-increment:q;
+    position:relative;
+    padding:0 0 22px 46px;
+    margin:0 0 22px;
+    border-bottom:1px solid var(--grid);
+  }
+  .prompts>li:last-child{border-bottom:none;margin-bottom:0;}
+  .prompts>li::before{
+    content:counter(q,decimal-leading-zero);
+    position:absolute;
+    left:0;
+    top:1px;
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:14px;
+    color:var(--marigold);
+    background:var(--paper);
+    border:1.5px solid var(--marigold);
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+  }
+  .q{
+    font-size:18px;
+    font-weight:600;
+    color:var(--ink);
+    margin:2px 0 0;
+    line-height:1.4;
+  }
+  .cue{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.03em;
+    color:var(--moss);
+  }
+  .cue::before{
+    content:"✎";
+    font-size:14px;
+  }
+
+  /* subject grid */
+  .subjects{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:14px 0 4px;
+  }
+  .subj{
+    border:1px solid var(--grid-strong);
+    background:var(--paper);
+    border-radius:6px;
+    padding:14px 15px 15px;
+  }
+  .subj .top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  .subj .ic{font-size:22px;line-height:1;}
+  .subj .nm{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:15.5px;
+  }
+  .subj .desc{
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:13px;
+    margin:6px 0 8px;
+    line-height:1.35;
+  }
+  .subj .st{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--moss);
+    letter-spacing:.01em;
+    line-height:1.5;
+  }
+
+  /* the agree scale */
+  .scale{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    margin:12px 0 4px;
+  }
+  .scale div{
+    border:1px solid var(--grid-strong);
+    border-radius:8px;
+    background:var(--paper);
+    text-align:center;
+    padding:12px 5px 11px;
+  }
+  .scale .n{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    color:var(--teal);
+    display:block;
+    margin-bottom:5px;
+  }
+  .scale .t{font-size:11.5px;color:var(--ink-soft);line-height:1.28;}
+
+  .statement{
+    background:var(--paper-warm);
+    border:1px solid var(--grid-strong);
+    border-left:4px solid var(--teal);
+    border-radius:4px;
+    padding:12px 15px;
+    margin-top:4px;
+    font-style:italic;
+    font-size:16.5px;
+    color:var(--pine);
+  }
+
+  .fillblank{
+    background:var(--paper-warm);
+    border:1px solid var(--grid-strong);
+    border-radius:6px;
+    padding:14px 16px;
+    margin-top:12px;
+    font-size:16.5px;
+    line-height:1.95;
+  }
+  .fillblank .b{
+    display:inline-block;
+    min-width:120px;
+    border-bottom:2px dotted var(--moss);
+  }
+
+  /* letter step list */
+  .steps-do{
+    margin:14px 0 0;
+    padding-left:20px;
+  }
+  .steps-do li{margin:7px 0;}
+  .link{
+    color:var(--teal);
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    text-decoration:none;
+    border-bottom:2px solid var(--marigold-soft);
+  }
+  .link:hover{border-bottom-color:var(--marigold);}
+
+  /* closing */
+  .closing{
+    margin-top:60px;
+    background:var(--pine);
+    color:var(--paper);
+    padding:34px 30px;
+    border-radius:8px;
+    border-bottom:6px solid var(--marigold);
+    text-align:center;
+  }
+  .closing h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.5rem;
+    margin:0 0 10px;
+  }
+  .closing p{margin:0 auto;max-width:50ch;color:#dce8dc;}
+  .closing .sig{
+    margin-top:18px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--marigold-soft);
+  }
+
+  /* page corner marker per step */
+  .pageno{
+    position:absolute;
+    right:0;
+    top:6px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--ink-soft);
+  }
+
+  a:focus-visible,.link:focus-visible{outline:3px solid var(--teal);outline-offset:2px;}
+
+  @media (max-width:560px){
+    body{font-size:16px;}
+    .subjects{grid-template-columns:1fr;}
+    .scale{grid-template-columns:repeat(5,1fr);gap:5px;}
+    .scale .t{font-size:9.5px;}
+    .dateline{grid-template-columns:1fr 1fr;}
+    .cover{padding:44px 22px 34px;}
+    .prompts>li{padding-left:40px;}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .step,.intro,.closing{opacity:0;transform:translateY(14px);animation:rise .6s ease forwards;}
+    .step{animation-delay:.05s;}
+    @keyframes rise{to{opacity:1;transform:none;}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- COVER -->
+  <header class="cover">
+    <div class="cover-tag">
+      <span>Engineering Notebook</span>
+      <span>Entry 01</span>
+    </div>
+    <h1>Who Are You<br><span class="hl">Becoming?</span></h1>
+    <p>This is the first page of your engineering notebook. Not a form to fill in and lose, but a record you'll keep. Years from now you'll read back to today and see the exact moment you started shaping the person you're becoming. So write it straight, and write it for you.</p>
+    <div class="dateline">
+      <span>Name</span>
+      <span>Class / Section</span>
+      <span>Date</span>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <h2>Before you start: open your notebook</h2>
+    <p>This guide doesn't hold your answers. <strong>Your engineering notebook does.</strong> Get it, turn to the first blank page, and write today's date at the top. Everything you write today becomes Entry 01.</p>
+    <p>Work through the four steps in order. For each prompt, copy enough of the question that it still makes sense when you read it back in a year or two, then write your answer beneath it. These questions aren't about what you already know. They're about how you think.</p>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step">
+    <span class="pageno">p. 01</span>
+    <span class="step-tab">Step <b>01</b></span>
+    <h2 class="step-head">My Relationship with Technology</h2>
+    <div class="todo">
+      <span class="lbl">What to do</span>
+      Before you can understand where technology is going, it helps to understand your relationship with it right now. Answer honestly, in your own words, in your notebook.
+    </div>
+    <ol class="prompts">
+      <li>
+        <p class="q">How has technology shaped who you are: the way you learn, communicate, create, or see the world?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Where do you see technology falling short today? What problem does it create, or leave unsolved?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Consider this statement, then decide where you land:</p>
+        <div class="statement">"Right now, I am more of a consumer of technology than a creator of it."</div>
+        <div class="scale">
+          <div><span class="n">1</span><span class="t">Strongly disagree</span></div>
+          <div><span class="n">2</span><span class="t">Disagree</span></div>
+          <div><span class="n">3</span><span class="t">Neutral</span></div>
+          <div><span class="n">4</span><span class="t">Agree</span></div>
+          <div><span class="n">5</span><span class="t">Strongly agree</span></div>
+        </div>
+        <span class="cue">Copy your position into your notebook and note what made you choose it</span>
+      </li>
+      <li>
+        <p class="q">What would it mean for YOU to shift from consuming technology to actually shaping it, even in a small way?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step">
+    <span class="pageno">p. 02</span>
+    <span class="step-tab">Step <b>02</b></span>
+    <h2 class="step-head">Six Doors, Which One Opens for You?</h2>
+    <div class="todo">
+      <span class="lbl">What to do</span>
+      This curriculum offers six fields of study. Each one is a door, and you don't have to choose just one. But knowing where your curiosity and your ambition intersect is powerful. Be honest about where you stand today.
+    </div>
+    <div class="tip">
+      <span class="lbl">Tip</span>
+      These aren't just technical subjects, they're lenses for seeing the world. A musician who understands programming, a doctor who understands AI, a filmmaker who understands design: these people have an extraordinary edge.
+    </div>
+    <ol class="prompts">
+      <li>
+        <p class="q">Mark your honest level of experience with each subject.</p>
+        <div class="subjects">
+          <div class="subj">
+            <div class="top"><span class="ic">🤖</span><span class="nm">Robotics</span></div>
+            <div class="desc">Systems, automation, physical AI</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+          <div class="subj">
+            <div class="top"><span class="ic">💻</span><span class="nm">Programming</span></div>
+            <div class="desc">Build tools, apps, anything digital</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+          <div class="subj">
+            <div class="top"><span class="ic">⚡</span><span class="nm">Electronics</span></div>
+            <div class="desc">The hardware behind every device</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+          <div class="subj">
+            <div class="top"><span class="ic">🧠</span><span class="nm">AI</span></div>
+            <div class="desc">The defining tech of your generation</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+          <div class="subj">
+            <div class="top"><span class="ic">🎨</span><span class="nm">Design</span></div>
+            <div class="desc">Shape how people experience the world</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+          <div class="subj">
+            <div class="top"><span class="ic">💡</span><span class="nm">Entrepreneurship</span></div>
+            <div class="desc">Turn ideas into real-world impact</div>
+            <div class="st">New to me · Some exposure · Know my way around · Could teach this</div>
+          </div>
+        </div>
+        <span class="cue">List all six in your notebook and mark your level for each</span>
+      </li>
+      <li>
+        <p class="q">Which subject connects most directly to something you genuinely care about in the world, and how?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Which subject feels most outside your comfort zone, and why might that discomfort actually be valuable?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">If you could only master one of these six fields in the next two years, which would it be, and why?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step">
+    <span class="pageno">p. 03</span>
+    <span class="step-tab">Step <b>03</b></span>
+    <h2 class="step-head">Finding Your Drive</h2>
+    <div class="todo">
+      <span class="lbl">What to do</span>
+      This is the most important section. Motivation that comes from someone else fades fast. Motivation that comes from inside you, from what you care about, what frustrates you, what you dream about, is what carries you through hard days. Let's find yours.
+    </div>
+    <div class="tip">
+      <span class="lbl">Tip</span>
+      You don't need to want to become an engineer or scientist to get enormous value here. A future lawyer who understands AI argues better cases. A future chef who understands design builds a better brand. A future athlete who understands entrepreneurship owns their career. These subjects belong to every ambitious person, including you.
+    </div>
+    <ol class="prompts">
+      <li>
+        <p class="q">What do you want to do with your life, or what directions are you genuinely considering? Be real. "I don't know yet" is a completely valid answer.</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Whatever path you're imagining: which of the six subjects (robotics, programming, electronics, AI, design, or entrepreneurship) could give you an edge in that world? How specifically?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">What is a problem in the world that you find genuinely unfair, broken, or worth fixing? It can be big or small.</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Which of these six subjects could be a tool for tackling that problem, even if you're not sure how yet?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Think of something you've built, led, created, or figured out that you're actually proud of. What was it? What drove you to finish it?</p>
+        <span class="cue">Write a full response in your notebook</span>
+      </li>
+      <li>
+        <p class="q">Complete this honestly:</p>
+        <div class="fillblank">
+          "I want to understand <span class="b"></span> because in the world I want to live in, or help build, it matters because <span class="b"></span>."
+        </div>
+        <span class="cue">Copy the sentence into your notebook and complete it</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step">
+    <span class="pageno">p. 04</span>
+    <span class="step-tab">Step <b>04</b></span>
+    <h2 class="step-head">A Letter to Your Future Self</h2>
+    <div class="todo">
+      <span class="lbl">What to do</span>
+      You're going to write a letter to yourself, and a real platform called FutureMe will deliver it to your inbox in 1 to 3 years. Read by nobody else. Written only for you. This is one of the most honest things you can do on day one. Draft it in your notebook first so a copy stays with Entry 01, then transfer it.
+      <ol class="steps-do">
+        <li>Go to <a class="link" href="https://www.emailtofuture.com" target="_blank" rel="noopener">www.emailtofuture.com</a> on your phone or laptop.</li>
+        <li>Set your delivery date 2 to 3 years from today.</li>
+        <li>Use the prompts below to draft your letter, then transfer it to the site.</li>
+        <li>Keep a copy somewhere safe. Then let it go.</li>
+      </ol>
+    </div>
+    <div class="tip">
+      <span class="lbl">Tip</span>
+      The most valuable letters aren't the polished ones, they're the honest ones. Write the version you wouldn't show anyone else. Future you deserves that.
+    </div>
+    <ol class="prompts">
+      <li>
+        <p class="q">Who are you right now, honestly? What's taking up your head and your time this year?</p>
+        <span class="cue">Draft in your notebook, then transfer it</span>
+      </li>
+      <li>
+        <p class="q">What are you hoping is true about your life by the time this letter lands? What are you afraid might be?</p>
+        <span class="cue">Draft in your notebook, then transfer it</span>
+      </li>
+      <li>
+        <p class="q">What's one thing you don't want future-you to forget or give up on?</p>
+        <span class="cue">Draft in your notebook, then transfer it</span>
+      </li>
+      <li>
+        <p class="q">What's one question you want future-you to sit with when the letter arrives?</p>
+        <span class="cue">Draft in your notebook, then transfer it</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <h2>That's Entry 01.</h2>
+    <p>Keep this notebook, and keep writing in it. Every project, decision, dead end, and breakthrough this year earns a page. The person reading this back in a few years will be you, and they'll know exactly where it all started.</p>
+    <div class="sig">Signed &amp; dated by today-you</div>
+  </section>
+
+</div>
+</body>
+</html>

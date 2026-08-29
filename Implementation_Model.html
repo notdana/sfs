@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Implementation Model</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#231F20;--ink-soft:#3A3D42;--paper:#FFFFFF;--cream:#F7F5F1;--grey:#EBEBEC;--line:#E2DED7;
+  --orange:#F48120;--orange-deep:#D9660F;--orange-soft:#FDF0E4;--peach:#F2C6A5;
+  --green:#2E9E6B;--muted:#6B6E74;--muted-soft:#9A9DA3;
+}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.08}
+.wrap{max-width:1000px;margin:0 auto;padding:0 32px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--orange-deep)}
+.eyebrow::before{content:'';width:24px;height:3px;background:var(--orange);border-radius:2px}
+
+/* HERO */
+.hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+.hero-in{max-width:1000px;margin:0 auto;padding:70px 32px 76px;position:relative;z-index:2}
+.hero h1{font-size:clamp(32px,5vw,52px);font-weight:700;margin:18px 0 16px;max-width:20ch}
+.hero h1 .hl{color:var(--orange)}
+.hero p{font-size:17px;color:#CFCBC4;max-width:60ch}
+.rings{position:absolute;top:-120px;right:-120px;z-index:1}
+.rings div{position:absolute;border-radius:50%}
+.headline-num{display:flex;align-items:baseline;gap:14px;margin-top:30px}
+.headline-num .n{font-family:'Space Grotesk';font-size:56px;font-weight:700;color:var(--orange);line-height:1}
+.headline-num .t{font-size:16px;color:#E6E2DB;max-width:24ch}
+
+/* PHASE BAR */
+.phasebar{background:var(--cream);padding:34px 0;border-bottom:1px solid var(--line)}
+.pb-track{display:flex;gap:6px;align-items:stretch}
+.pb-seg{border-radius:8px;padding:14px 16px;color:#fff;position:relative}
+.pb-seg .d{font-family:'Space Grotesk';font-size:12px;font-weight:600;opacity:.85}
+.pb-seg .l{font-size:14px;font-weight:700;margin-top:2px}
+.pb-prep{background:var(--ink);flex:2}
+.pb-onboard{background:var(--orange-deep);flex:1}
+.pb-run{background:var(--orange);flex:2.4}
+.pb-caption{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--muted)}
+@media(max-width:720px){.pb-track{flex-direction:column}.pb-seg{flex:none!important}}
+
+/* TIMELINE */
+.section{padding:64px 0}
+.tl{position:relative;margin-left:8px}
+.tl::before{content:'';position:absolute;left:19px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.step{position:relative;padding-left:64px;margin-bottom:34px}
+.step .marker{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Space Grotesk';font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 0 5px var(--paper)}
+.step.dark .marker{background:var(--ink)}
+.step.green .marker{background:var(--green)}
+.step .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px 26px}
+.step .top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px}
+.step h3{font-size:21px;font-weight:600}
+.step .dur{font-family:'Space Grotesk';font-size:13px;font-weight:600;color:var(--orange-deep);background:var(--orange-soft);border:1px solid var(--peach);padding:5px 13px;border-radius:20px;white-space:nowrap}
+.step .lead{font-size:14.5px;color:var(--muted);margin:8px 0 14px}
+.step ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.step li{font-size:14px;color:var(--ink-soft);padding-left:22px;position:relative}
+.step li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.step .inset{margin-top:14px;background:var(--cream);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;font-size:13.5px;color:var(--ink-soft)}
+.step .inset b{color:var(--ink)}
+.launch-flag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-weight:700;font-size:13px;color:var(--green);background:#E4F4EC;border:1px solid #B8E0CC;padding:6px 14px;border-radius:20px;margin-top:12px}
+
+/* MILESTONE divider */
+.launch-divider{display:flex;align-items:center;gap:16px;margin:6px 0 34px 64px}
+.launch-divider .line{flex:1;height:2px;background:var(--green);opacity:.3}
+.launch-divider .tag{font-family:'Space Grotesk';font-weight:700;font-size:15px;color:var(--green);text-transform:uppercase;letter-spacing:.06em}
+
+/* ongoing band */
+.ongoing{background:var(--grey);border-radius:16px;padding:26px 28px;margin-top:10px}
+.ongoing h3{font-size:19px;font-weight:600;margin-bottom:6px}
+.ongoing p{font-size:14px;color:var(--muted);margin-bottom:14px}
+.ongoing .quarters{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.q .qn{font-family:'Space Grotesk';font-weight:700;color:var(--orange-deep);font-size:14px}
+.q .qt{font-size:12px;color:var(--muted);margin-top:3px}
+@media(max-width:720px){.ongoing .quarters{grid-template-columns:1fr 1fr}}
+
+/* two people note */
+.people-note{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px}
+.pnote{flex:1;min-width:220px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.pnote .r{font-family:'Space Grotesk';font-weight:700;color:var(--orange-deep);font-size:14px;margin-bottom:3px}
+.pnote .x{font-size:13px;color:var(--muted)}
+
+.footer{background:var(--ink);color:rgba(255,255,255,.5);padding:34px 0;font-size:13px}
+.footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer .rungs{display:inline-flex;flex-direction:column;gap:2.5px;vertical-align:middle;margin-right:8px}
+.footer .rungs span{width:16px;height:2.5px;background:var(--orange);border-radius:2px;display:block}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="rings">
+    <div style="width:420px;height:420px;background:#3a2f24"></div>
+    <div style="width:300px;height:300px;top:60px;right:60px;background:var(--orange-deep)"></div>
+    <div style="width:170px;height:170px;top:125px;right:125px;background:var(--orange)"></div>
+  </div>
+  <div class="hero-in">
+    <span class="eyebrow" style="color:var(--orange)">Implementation Model</span>
+    <h1>From signing to a <span class="hl">running program.</span></h1>
+    <p>What happens once a school partners with us: how the lab is prepared, how teachers are trained and certified, and how the program is launched and supported through the year.</p>
+    <div class="headline-num">
+      <div class="n">~3</div>
+      <div class="t">months from signing to a launched, running program.</div>
+    </div>
+  </div>
+</header>
+
+<!-- PHASE BAR -->
+<section class="phasebar">
+  <div class="wrap">
+    <div class="pb-track">
+      <div class="pb-seg pb-prep"><div class="d">2 months</div><div class="l">Lab Preparation</div></div>
+      <div class="pb-seg pb-onboard"><div class="d">1 month</div><div class="l">Onboarding</div></div>
+      <div class="pb-seg pb-run"><div class="d">Through the year</div><div class="l">Running &amp; Supported</div></div>
+    </div>
+    <div class="pb-caption">
+      <span>Contract signed</span>
+      <span>Launch (~3 months)</span>
+      <span>Review &amp; grow</span>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="wrap">
+    <div class="tl">
+
+      <div class="step dark">
+        <div class="marker">1</div>
+        <div class="card">
+          <div class="top"><h3>Lab Preparation</h3><span class="dur">2 months</span></div>
+          <p class="lead">The physical foundation is built while the school's teacher is brought on board.</p>
+          <ul>
+            <li>Procurement of hardware, kits, tools, and devices</li>
+            <li>Lab build and configuration (or build to specification, depending on the setup model)</li>
+            <li>Teacher hiring, the school's teacher is identified and brought on during this window</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="marker">2</div>
+        <div class="card">
+          <div class="top"><h3>Onboarding</h3><span class="dur">1 month</span></div>
+          <p class="lead">Everything needed to actually run the program is set up, and the teacher is trained.</p>
+          <ul>
+            <li>Operations and documentation systems set up</li>
+            <li>LMS integration and account setup</li>
+            <li>School launch preparation</li>
+          </ul>
+          <div class="inset"><b>Includes Teacher Training, Part 1 (2 weeks)</b> plus the first assessment, delivered within the onboarding month, before the first lesson.</div>
+          <div class="launch-flag">★ Ends with the Launch</div>
+        </div>
+      </div>
+
+      <div class="launch-divider">
+        <span class="tag">Launch</span>
+        <span class="line"></span>
+        <span class="tag" style="font-size:12px;color:var(--muted);letter-spacing:0;text-transform:none">Lab opens · inauguration · first lessons begin</span>
+      </div>
+
+      <div class="step green">
+        <div class="marker">3</div>
+        <div class="card">
+          <div class="top"><h3>Teacher Training, Part 2</h3><span class="dur">2 weeks · mid-year</span></div>
+          <p class="lead">The second training deepens the teacher's capability once the program is underway.</p>
+          <ul>
+            <li>Second training block, delivered mid-year</li>
+            <li>Second assessment</li>
+          </ul>
+          <div class="inset"><b>Certification is earned only after both assessments are passed.</b> The teacher is certified once Part 1 and Part 2 assessments are both complete.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="marker">4</div>
+        <div class="card">
+          <div class="top"><h3>Running &amp; Supported</h3><span class="dur">Through the year</span></div>
+          <p class="lead">The program runs, with structured support and a quarterly rhythm of audits and meetings.</p>
+          <div class="ongoing">
+            <h3>Quarterly audit &amp; meeting</h3>
+            <p>Four structured audits and meetings a year with the person in charge, to review delivery quality and keep the program on track.</p>
+            <div class="quarters">
+              <div class="q"><div class="qn">Q1</div><div class="qt">Audit &amp; meeting</div></div>
+              <div class="q"><div class="qn">Q2</div><div class="qt">Audit &amp; meeting</div></div>
+              <div class="q"><div class="qn">Q3</div><div class="qt">Audit &amp; meeting</div></div>
+              <div class="q"><div class="qn">Q4</div><div class="qt">Audit &amp; meeting</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step dark">
+        <div class="marker">5</div>
+        <div class="card">
+          <div class="top"><h3>Review &amp; Grow</h3><span class="dur">End of year</span></div>
+          <p class="lead">The year's outcomes are reviewed with the school, the proof of what students learned, and the path forward is set.</p>
+          <ul>
+            <li>Full review of student outcomes and program delivery</li>
+            <li>The bridge to continuing and growing the partnership</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="people-note">
+      <div class="pnote"><div class="r">School point person</div><div class="x">One named contact at the school, assigned at kickoff, who anchors the relationship.</div></div>
+      <div class="pnote"><div class="r">Assigned SFS trainer</div><div class="x">One trainer from our side who delivers the training and supports the school through the year.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div><span class="rungs"><span></span><span></span><span></span></span> School for Schools · Implementation Model</div>
+    <div>From signing to a running program</div>
+  </div>
+</footer>
+
+</body>
+</html>
